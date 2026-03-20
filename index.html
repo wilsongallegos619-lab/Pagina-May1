@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -179,11 +179,15 @@ function drop(symbol){
   document.body.appendChild(p);
   setTimeout(()=>p.remove(),7000);
 }
+
 function startEffect(symbol){
   clearInterval(effectInterval);
   effectInterval=setInterval(()=>drop(symbol),500);
 }
-function stopEffect(){ clearInterval(effectInterval); }
+
+function stopEffect(){
+  clearInterval(effectInterval);
+}
 
 /* teclado */
 function addNum(num){
@@ -237,6 +241,14 @@ function clearPass(){
 <!-- CARTA -->
 <div id="carta" class="section">
   <iframe src="https://wilsongallegos619-lab.github.io/tulipanes1/"></iframe>
+
+  <p style="max-width:760px;margin:auto;font-size:18px;color:#4a2a2a;">
+    Mi amor,<br><br>
+    No hay instante en el que no piense en usted...<br><br>
+    Le amo por lo que es y por lo que despierta en mí...<br><br>
+    <b>Con todo mi corazón,<br>Le amo May, muak.</b>
+  </p>
+
   <button class="back" onclick="back()">Menú principal</button>
 </div>
 
@@ -264,14 +276,6 @@ function clearPass(){
 <div id="flores" class="section">
   <iframe src="https://wilsongallegos619-lab.github.io/flores-amarillas/"></iframe>
 
-  <div class="flores-texto">
-    Aunque no podamos vernos hoy, quise hacerle este pequeño detalle 💛  
-    para que sienta que estoy ahí con usted, acompañándole en cada momento.  
-    La distancia no cambia lo que siento, solo me hace buscar nuevas formas  
-    de demostrarle cuánto le amo.  
-    Usted es mi lugar favorito, incluso cuando no puedo estar físicamente ahí ✨
-  </div>
-
   <button class="back" onclick="back()">Menú principal</button>
 </div>
 
@@ -283,6 +287,8 @@ function clearPass(){
     Prometo que cada viaje valdrá la pena.<br>
     Prometo seguir escribiendo nuestra historia.
   </p>
+
+  <img src="imagen4.jpg" width="260">
 
   <button class="back" onclick="back()">Menú principal</button>
 </div>
@@ -305,6 +311,10 @@ function openSec(id){
   document.querySelectorAll(".section").forEach(s=>s.style.display="none");
   document.getElementById("menu").style.display="none";
   document.getElementById(id).style.display="block";
+
+  if(id==="carta" || id==="flores") startEffect("🌸");
+  if(id==="recuerdo") startEffect("❤️");
+  if(id==="promesa") startEffect("✨");
 }
 
 function back(){
