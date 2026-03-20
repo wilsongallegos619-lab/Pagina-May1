@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Una Cajita Para Usted 💌</title>
+
+<style>
+body{
+  margin:0;
+  font-family:'Georgia',serif;
+  background:linear-gradient(to bottom,#fce4ec,#ffffff);
+  text-align:center;
+  overflow-x:hidden;
+}
+
+/* partículas */
+.particle{
+  position:fixed;
+  top:-50px;
+  pointer-events:none;
+  animation:fall linear infinite;
+  z-index:5;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);}
+}
+
+/* login */
+#login{
+  margin-top:120px;
+}
+input,button{
+  padding:10px;
+  border-radius:8px;
+  border:none;
+  font-size:16px;
+}
+button{
+  background:#ffb6c1;
+  cursor:pointer;
+}
+
+/* menu */
+#menu{
+  display:none;
+  margin-top:40px;
+}
+.menu-grid{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+.menu-btn{
+  width:160px;
+  height:120px;
+  background:#fff0f5;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  font-weight:bold;
+  box-shadow:0 5px 15px rgba(0,0,0,.2);
+
+  /* ✨ animación agregada */
+  animation:pulseBtn 3s infinite;
+  transition:transform .3s, box-shadow .3s;
+}
+.menu-btn:hover{
+  transform:scale(1.08);
+  box-shadow:0 12px 25px rgba(255,105,180,.45);
+}
+@keyframes pulseBtn{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.04);}
+  100%{transform:scale(1);}
+}
+
+/* secciones */
+.section{
+  display:none;
+  min-height:100vh;
+  padding:40px 20px;
+}
+.back{
+  margin-top:30px;
+  padding:10px 16px;
+}
+
+/* carta */
+#carta{
+  background:#ffe4ec;
+}
+#carta iframe{
+  width:100%;
+  height:420px;
+  border:none;
+}
+
+/* recuerdo */
+#recuerdo{
+  background:#fff7fb;
+}
+.gallery img{
+  width:220px;
+  border-radius:14px;
+  margin:10px;
+  box-shadow:0 5px 15px rgba(0,0,0,.3);
+  transition:transform .3s, box-shadow .3s;
+}
+.gallery img:hover{
+  transform:scale(1.08);
+  box-shadow:0 15px 30px rgba(0,0,0,.45);
+}
+
+/* promesa */
+#promesa{
+  background:url("https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3") center/cover;
+  color:white;
+}
+
+/* 💓 palpitación suave de imágenes */
+img{
+  animation:breath 4s ease-in-out infinite;
+}
+@keyframes breath{
+  0%{transform:scale(1);}
+  50%{transform:scale(1.03);}
+  100%{transform:scale(1);}
+}
+
+/* 🎈 imagen principal flotando */
+#menu img{
+  animation:float 6s ease-in-out infinite;
+}
+@keyframes float{
+  0%{transform:translateY(0);}
+  50%{transform:translateY(-8px);}
+  100%{transform:translateY(0);}
+}
+</style>
+</head>
+
+<body>
+
+<audio id="music" loop>
+  <source src="cancion.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+let effectInterval=null;
+
+function drop(symbol){
+  const p=document.createElement("div");
+  p.className="particle";
+  p.textContent=symbol;
+  p.style.left=Math.random()*100+"vw";
+  p.style.fontSize=(16+Math.random()*20)+"px";
+  p.style.animationDuration=(3+Math.random()*4)+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),7000);
+}
+
+function startEffect(symbol){
+  clearInterval(effectInterval);
+  effectInterval=setInterval(()=>drop(symbol),500);
+}
+function stopEffect(){
+  clearInterval(effectInterval);
+}
+</script>
+
+<!-- LOGIN -->
+<div id="login">
+  <h1>Una Cajita Para Usted 💌</h1>
+  <input type="password" id="pass" placeholder="Contraseña">
+  <br><br>
+  <button onclick="entrar()">Abrir</button>
+  <p id="msg" style="color:red;"></p>
+</div>
+
+<!-- MENU -->
+<div id="menu">
+  <img src="nosotros.jpeg" width="260" style="border-radius:16px;box-shadow:0 5px 15px rgba(0,0,0,.3);"><br><br>
+
+  <div class="menu-grid">
+    <div class="menu-btn" onclick="openSec('carta')">💌 Carta</div>
+    <div class="menu-btn" onclick="openSec('recuerdo')">🌸 Recuerdo</div>
+    <div class="menu-btn" onclick="openSec('promesa')">✨ Promesa</div>
+  </div>
+</div>
+
+<!-- CARTA -->
+<div id="carta" class="section">
+  <iframe src="https://wilsongallegos619-lab.github.io/tulipanes1/"></iframe>
+
+  <p style="max-width:760px;margin:auto;font-size:18px;color:#4a2a2a;">
+    Mi amor,<br><br>
+    No hay instante en el que no piense en usted. Desde que llegó a mi vida, todo adquirió un significado distinto, más intenso, más verdadero. Amarle no fue una decisión; fue un destino que se impuso con dulzura, con fuerza y con una certeza que jamás había sentido antes. Le amo con una profundidad que las palabras apenas logran rozar, pero aun así deseo intentarlo, porque usted merece saberlo.<br><br>
+
+    Le amo en cada pensamiento silencioso, en cada latido que se acelera cuando imagino su mirada. Le amo en la calma que me regala su presencia y en la ansiedad hermosa que siento cuando no está. Usted es esa persona que, sin proponérselo, se volvió indispensable, esa razón por la que el mundo parece un lugar más amable.<br><br>
+
+    Cuando me besa, el tiempo pierde sentido. En esos besos encuentro refugio, promesas y una conexión que va más allá de lo físico. Me besa y todo se detiene; me besa y comprendo que el amor verdadero sí existe.<br><br>
+
+    Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los momentos difíciles, porque amarle no depende de circunstancias, sino de una convicción profunda y honesta.<br><br>
+
+    <b>Con todo mi corazón,<br>Le amo May, muak.</b>
+  </p>
+
+  <button class="back" onclick="back()">Menú principal</button>
+</div>
+
+<!-- RECUERDO -->
+<div id="recuerdo" class="section">
+  <h2>Usted es el amor de mi vida.</h2>
+
+  <div class="gallery">
+    <img src="imagen1.jpg">
+    <img src="imagen2.jpg">
+    <img src="imagen3.jpg">
+  </div>
+
+  <button class="back" onclick="back()">Menú principal</button>
+</div>
+
+<!-- PROMESA -->
+<div id="promesa" class="section">
+  <h2>Una Promesa Sellada</h2>
+  <p>
+    Prometo cuidar su corazón como si fuera el mío.<br>
+    Prometo que cada viaje valdrá la pena.<br>
+    Prometo seguir escribiendo nuestra historia.
+  </p>
+
+  <img src="imagen4.jpg" width="260" style="border-radius:16px;box-shadow:0 5px 15px rgba(0,0,0,.4);">
+
+  <br>
+  <button class="back" onclick="back()">Menú principal</button>
+</div>
+
+<script>
+function entrar(){
+  if(pass.value==="22102025"){
+    login.style.display="none";
+    menu.style.display="block";
+    document.getElementById("music").play();
+    startEffect("💗");
+  }else{
+    msg.textContent="Contraseña incorrecta 😢";
+  }
+}
+
+function openSec(id){
+  stopEffect();
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  menu.style.display="none";
+  document.getElementById(id).style.display="block";
+
+  if(id==="carta") startEffect("🌸");
+  if(id==="recuerdo") startEffect("❤️");
+  if(id==="promesa") startEffect("✨");
+}
+
+function back(){
+  stopEffect();
+  document.querySelectorAll(".section").forEach(s=>s.style.display="none");
+  menu.style.display="block";
+}
+</script>
+
+</body>
+</html>
