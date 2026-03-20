@@ -351,18 +351,20 @@ style="position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-in
   
   <div class="contenido" style="position:relative; z-index:2; background:rgba(255,245,240,0.92); border-radius:40px; margin:20px; padding:20px;">
     
+    <h2 style="color:#b33b2c; text-align:center; margin-bottom:20px;">💖 Usted es el amor de mi vida 💖</h2>
+    
     <!-- Carrusel 1: se mueve de IZQUIERDA a DERECHA -->
-    <div style="margin-bottom: 25px; overflow:hidden; border-radius:24px; background:#fff5ee; padding:12px 0;">
-      <div id="carouselLeft" style="display:flex; gap:12px; width:max-content;"></div>
+    <div style="margin-bottom: 30px; overflow:hidden; border-radius:20px; background:#ffe8dd; padding:15px 0;">
+      <div id="carrusel1" style="display:flex; gap:15px; width:max-content;"></div>
     </div>
     
     <!-- Carrusel 2: se mueve de DERECHA a IZQUIERDA -->
-    <div style="overflow:hidden; border-radius:24px; background:#fff5ee; padding:12px 0;">
-      <div id="carouselRight" style="display:flex; gap:12px; width:max-content;"></div>
+    <div style="overflow:hidden; border-radius:20px; background:#ffe8dd; padding:15px 0;">
+      <div id="carrusel2" style="display:flex; gap:15px; width:max-content;"></div>
     </div>
     
-    <div style="text-align:center; margin-top:25px;">
-      <button class="back" onclick="back()" style="background:#c27e5a; color:white; border:none; padding:10px 28px; border-radius:40px; font-size:1rem; cursor:pointer;">Menú principal</button>
+    <div style="text-align:center; margin-top:30px;">
+      <button class="back" onclick="back()" style="background:#c27e5a; color:white; border:none; padding:10px 30px; border-radius:40px; font-size:1rem; cursor:pointer;">Menú principal</button>
     </div>
   </div>
 </div>
@@ -637,10 +639,9 @@ function back(){
 </div>
 
 <script>
-// ========== CARRUSELES CON TUS IMÁGENES ORIGINALES ==========
-(function() {
-  // TUS IMÁGENES ORIGINALES (las que ya tenías y funcionaban)
-  const todasLasImagenes = [
+// ========== CARRUSELES SIMPLES Y DIRECTOS ==========
+// Tus imágenes (las mismas que funcionaban antes)
+var misImagenes = [
     "imagen1.jpg",
     "imagen2.jpg",
     "imagen3.jpg",
@@ -667,161 +668,112 @@ function back(){
     "may11.jpeg",
     "may12.jpeg",
     "may13.jpeg"
-  ];
-  
-  // Dividir en dos grupos (mitad y mitad)
-  const mitad = Math.ceil(todasLasImagenes.length / 2);
-  const imagenesGrupo1 = todasLasImagenes.slice(0, mitad);
-  const imagenesGrupo2 = todasLasImagenes.slice(mitad);
-  
-  // ==================== CARRUSEL 1 (IZQUIERDA → DERECHA) ====================
-  function iniciarCarruselIzquierda() {
-    const track = document.getElementById('carouselLeft');
-    if (!track) return;
+];
+
+// Dividir en dos grupos
+var mitad = Math.ceil(misImagenes.length / 2);
+var grupo1 = misImagenes.slice(0, mitad);
+var grupo2 = misImagenes.slice(mitad);
+
+// Variable para controlar que solo se inicie una vez
+var carruselesActivados = false;
+
+function iniciarCarruseles() {
+    if (carruselesActivados) return;
     
-    // Crear suficientes copias para loop infinito (5 copias para estar seguros)
-    let items = [];
-    for (let i = 0; i < 5; i++) {
-      items = [...items, ...imagenesGrupo1];
+    // ========== CARRUSEL 1 (se mueve hacia la izquierda) ==========
+    var track1 = document.getElementById('carrusel1');
+    if (track1) {
+        // Duplicar imágenes muchas veces para que nunca falten
+        var imagenes1 = [];
+        for (var i = 0; i < 6; i++) {
+            imagenes1 = imagenes1.concat(grupo1);
+        }
+        
+        track1.innerHTML = '';
+        for (var i = 0; i < imagenes1.length; i++) {
+            var img = document.createElement('img');
+            img.src = imagenes1[i];
+            img.style.width = "200px";
+            img.style.height = "200px";
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "16px";
+            img.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+            track1.appendChild(img);
+        }
+        
+        var pos1 = 0;
+        var anchoSet1 = grupo1.length * (200 + 15);
+        
+        function moverCarrusel1() {
+            pos1 = pos1 - 0.8;
+            if (Math.abs(pos1) >= anchoSet1 * 2) {
+                pos1 = pos1 + anchoSet1;
+            }
+            track1.style.transform = "translateX(" + pos1 + "px)";
+            requestAnimationFrame(moverCarrusel1);
+        }
+        moverCarrusel1();
     }
     
-    track.innerHTML = '';
-    
-    items.forEach((imgSrc) => {
-      const img = document.createElement('img');
-      img.src = imgSrc;
-      img.style.width = "200px";
-      img.style.height = "200px";
-      img.style.objectFit = "cover";
-      img.style.borderRadius = "18px";
-      img.style.boxShadow = "0 6px 15px rgba(0,0,0,0.2)";
-      img.style.display = "block";
-      track.appendChild(img);
-    });
-    
-    let position = 0;
-    const speed = 0.7;
-    let animating = true;
-    let animationId = null;
-    
-    const singleSetWidth = imagenesGrupo1.length * (200 + 12);
-    const totalWidth = items.length * (200 + 12);
-    
-    function animate() {
-      if (!animating) {
-        animationId = null;
-        return;
-      }
-      position -= speed;
-      
-      // Cuando se haya desplazado el ancho de 2 sets completos, reiniciar suavemente
-      if (Math.abs(position) >= singleSetWidth * 2) {
-        position = position + singleSetWidth;
-      }
-      
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
+    // ========== CARRUSEL 2 (se mueve hacia la derecha) ==========
+    var track2 = document.getElementById('carrusel2');
+    if (track2) {
+        // Duplicar imágenes muchas veces
+        var imagenes2 = [];
+        for (var i = 0; i < 6; i++) {
+            imagenes2 = imagenes2.concat(grupo2);
+        }
+        
+        track2.innerHTML = '';
+        for (var i = 0; i < imagenes2.length; i++) {
+            var img = document.createElement('img');
+            img.src = imagenes2[i];
+            img.style.width = "200px";
+            img.style.height = "200px";
+            img.style.objectFit = "cover";
+            img.style.borderRadius = "16px";
+            img.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
+            track2.appendChild(img);
+        }
+        
+        var pos2 = 0;
+        var anchoSet2 = grupo2.length * (200 + 15);
+        
+        function moverCarrusel2() {
+            pos2 = pos2 + 0.8;
+            if (pos2 >= anchoSet2 * 2) {
+                pos2 = pos2 - anchoSet2;
+            }
+            track2.style.transform = "translateX(" + pos2 + "px)";
+            requestAnimationFrame(moverCarrusel2);
+        }
+        moverCarrusel2();
     }
     
-    const container = track.parentElement;
-    container.addEventListener('mouseenter', () => { 
-      animating = false; 
-      if (animationId) cancelAnimationFrame(animationId);
-    });
-    container.addEventListener('mouseleave', () => { 
-      animating = true; 
-      animate();
-    });
-    
-    animate();
-  }
-  
-  // ==================== CARRUSEL 2 (DERECHA → IZQUIERDA) ====================
-  function iniciarCarruselDerecha() {
-    const track = document.getElementById('carouselRight');
-    if (!track) return;
-    
-    // Crear suficientes copias para loop infinito (5 copias)
-    let items = [];
-    for (let i = 0; i < 5; i++) {
-      items = [...items, ...imagenesGrupo2];
+    carruselesActivados = true;
+    console.log("Carruseles iniciados correctamente");
+}
+
+// Cuando se abre la sección Recuerdo, iniciamos los carruseles
+var funcionOriginal = window.openSec;
+window.openSec = function(id) {
+    if (id === 'recuerdo') {
+        // Pequeño retraso para asegurar que el DOM esté listo
+        setTimeout(function() {
+            iniciarCarruseles();
+        }, 200);
     }
-    
-    track.innerHTML = '';
-    
-    items.forEach((imgSrc) => {
-      const img = document.createElement('img');
-      img.src = imgSrc;
-      img.style.width = "200px";
-      img.style.height = "200px";
-      img.style.objectFit = "cover";
-      img.style.borderRadius = "18px";
-      img.style.boxShadow = "0 6px 15px rgba(0,0,0,0.2)";
-      img.style.display = "block";
-      track.appendChild(img);
-    });
-    
-    let position = 0;
-    const speed = 0.7;
-    let animating = true;
-    let animationId = null;
-    
-    const singleSetWidth = imagenesGrupo2.length * (200 + 12);
-    
-    function animate() {
-      if (!animating) {
-        animationId = null;
-        return;
-      }
-      position += speed;
-      
-      if (position >= singleSetWidth * 2) {
-        position = position - singleSetWidth;
-      }
-      
-      track.style.transform = `translateX(${position}px)`;
-      animationId = requestAnimationFrame(animate);
+    if (funcionOriginal) funcionOriginal(id);
+};
+
+// Si Recuerdo ya está visible al cargar
+setTimeout(function() {
+    var seccionRecuerdo = document.getElementById('recuerdo');
+    if (seccionRecuerdo && seccionRecuerdo.style.display !== 'none') {
+        iniciarCarruseles();
     }
-    
-    const container = track.parentElement;
-    container.addEventListener('mouseenter', () => { 
-      animating = false; 
-      if (animationId) cancelAnimationFrame(animationId);
-    });
-    container.addEventListener('mouseleave', () => { 
-      animating = true; 
-      animate();
-    });
-    
-    animate();
-  }
-  
-  // ==================== INICIAR CUANDO SE ABRE RECUERDO ====================
-  let carruselesIniciados = false;
-  
-  function iniciarTodo() {
-    if (carruselesIniciados) return;
-    iniciarCarruselIzquierda();
-    iniciarCarruselDerecha();
-    carruselesIniciados = true;
-  }
-  
-  const originalOpenSec = window.openSec;
-  window.openSec = function(id) {
-    if (id === 'recuerdo' && !carruselesIniciados) {
-      setTimeout(() => {
-        iniciarTodo();
-      }, 100);
-    }
-    originalOpenSec(id);
-  };
-  
-  if (document.getElementById('recuerdo') && getComputedStyle(document.getElementById('recuerdo')).display !== 'none') {
-    setTimeout(() => {
-      iniciarTodo();
-    }, 100);
-  }
-})();
+}, 500);
 </script>
 
 </body>
