@@ -637,7 +637,7 @@ function back(){
 </div>
 
 <script>
-// ========== CARRUSELES FLUIDOS Y CONTINUOS ==========
+// ========== CARRUSELES FLUIDOS, MÁS RÁPIDOS Y LOOP INFINITO CORREGIDO ==========
 (function() {
   // LISTA COMPLETA DE TUS IMÁGENES
   const todasLasImagenes = [
@@ -677,10 +677,10 @@ function back(){
   // ==================== CARRUSEL 1 (IZQUIERDA → DERECHA) ====================
   function iniciarCarruselIzquierda() {
     const track = document.getElementById('carouselLeft');
-    if (!track) return;
+    if (!track || imagenesGrupo1.length === 0) return;
     
-    // Crear duplicados para efecto infinito (3 copias)
-    let items = [...imagenesGrupo1, ...imagenesGrupo1, ...imagenesGrupo1];
+    // Crear 4 copias para loop infinito perfecto (más copias = nunca se acaba)
+    let items = [...imagenesGrupo1, ...imagenesGrupo1, ...imagenesGrupo1, ...imagenesGrupo1];
     track.innerHTML = '';
     
     // Agregar todas las imágenes
@@ -698,16 +698,19 @@ function back(){
     
     // Animación continua con requestAnimationFrame
     let position = 0;
-    const speed = 0.5; // Velocidad suave (más bajo = más lento)
+    const speed = 0.85; // Velocidad más rápida (antes 0.5)
     let animating = true;
+    let animationId = null;
     
     function animate() {
-      if (!animating) return;
+      if (!animating) {
+        animationId = null;
+        return;
+      }
       position -= speed;
       
       // Calcular ancho de un set original
       const singleSetWidth = imagenesGrupo1.length * (220 + 12);
-      const totalWidth = items.length * (220 + 12);
       
       // Resetear posición cuando llegue al final de la primera copia
       if (Math.abs(position) >= singleSetWidth * 2) {
@@ -715,24 +718,30 @@ function back(){
       }
       
       track.style.transform = `translateX(${position}px)`;
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     }
     
     // Pausar/reanudar al hacer hover
     const container = track.parentElement;
-    container.addEventListener('mouseenter', () => { animating = false; });
-    container.addEventListener('mouseleave', () => { animating = true; animate(); });
+    container.addEventListener('mouseenter', () => { 
+      animating = false; 
+      if (animationId) cancelAnimationFrame(animationId);
+    });
+    container.addEventListener('mouseleave', () => { 
+      animating = true; 
+      animate();
+    });
     
     animate();
   }
   
-  // ==================== CARRUSEL 2 (DERECHA → IZQUIERDA) ====================
+  // ==================== CARRUSEL 2 (DERECHA → IZQUIERDA) - CORREGIDO ====================
   function iniciarCarruselDerecha() {
     const track = document.getElementById('carouselRight');
-    if (!track) return;
+    if (!track || imagenesGrupo2.length === 0) return;
     
-    // Crear duplicados para efecto infinito (3 copias)
-    let items = [...imagenesGrupo2, ...imagenesGrupo2, ...imagenesGrupo2];
+    // Crear 4 copias para loop infinito perfecto
+    let items = [...imagenesGrupo2, ...imagenesGrupo2, ...imagenesGrupo2, ...imagenesGrupo2];
     track.innerHTML = '';
     
     // Agregar todas las imágenes
@@ -750,16 +759,19 @@ function back(){
     
     // Animación continua hacia la derecha
     let position = 0;
-    const speed = 0.5; // Misma velocidad
+    const speed = 0.85; // Misma velocidad más rápida
     let animating = true;
+    let animationId = null;
     
     function animate() {
-      if (!animating) return;
+      if (!animating) {
+        animationId = null;
+        return;
+      }
       position += speed;
       
       // Calcular ancho de un set original
       const singleSetWidth = imagenesGrupo2.length * (220 + 12);
-      const totalWidth = items.length * (220 + 12);
       
       // Resetear posición cuando llegue al final
       if (position >= singleSetWidth * 2) {
@@ -767,13 +779,19 @@ function back(){
       }
       
       track.style.transform = `translateX(${position}px)`;
-      requestAnimationFrame(animate);
+      animationId = requestAnimationFrame(animate);
     }
     
     // Pausar/reanudar al hacer hover
     const container = track.parentElement;
-    container.addEventListener('mouseenter', () => { animating = false; });
-    container.addEventListener('mouseleave', () => { animating = true; animate(); });
+    container.addEventListener('mouseenter', () => { 
+      animating = false; 
+      if (animationId) cancelAnimationFrame(animationId);
+    });
+    container.addEventListener('mouseleave', () => { 
+      animating = true; 
+      animate();
+    });
     
     animate();
   }
