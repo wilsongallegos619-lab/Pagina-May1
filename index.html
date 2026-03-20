@@ -64,7 +64,7 @@ input{
   background:#ffc0cb;
 }
 
-/* menu */
+/* MENU MEJORADO */
 #menu{
   display:none;
   margin-top:40px;
@@ -76,20 +76,23 @@ input{
   flex-wrap:wrap;
 }
 .menu-btn{
-  width:160px;
+  width:170px;
   height:120px;
-  background:#fff0f5;
-  border-radius:16px;
+  background:linear-gradient(135deg,#ffc1cc,#ffe4ec);
+  border-radius:20px;
   display:flex;
   align-items:center;
   justify-content:center;
   cursor:pointer;
   font-weight:bold;
-  box-shadow:0 5px 15px rgba(0,0,0,.2);
+  font-size:18px;
+  color:#5a2a2a;
+  box-shadow:0 8px 20px rgba(0,0,0,.25);
   transition:.3s;
 }
 .menu-btn:hover{
-  transform:scale(1.08);
+  transform:scale(1.1);
+  box-shadow:0 12px 25px rgba(255,105,180,.4);
 }
 
 /* secciones */
@@ -103,11 +106,11 @@ input{
   padding:10px 16px;
 }
 
-/* carta */
+/* carta MÁS GRANDE */
 #carta{background:#ffe4ec;}
 #carta iframe{
   width:100%;
-  height:420px;
+  height:600px;
   border:none;
 }
 
@@ -126,11 +129,18 @@ input{
   z-index:1;
 }
 
-/* galería */
+/* GALERÍA TIPO ÁLBUM */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  max-width:900px;
+  margin:auto;
+}
+
 .gallery img{
-  width:220px;
+  width:100%;
   border-radius:14px;
-  margin:10px;
   box-shadow:0 5px 15px rgba(0,0,0,.3);
   transition:.3s;
 }
@@ -138,18 +148,11 @@ input{
   transform:scale(1.08);
 }
 
-/* FLORES */
+/* FLORES MÁS GRANDE */
 #flores iframe{
   width:100%;
-  height:400px;
+  height:650px;
   border:none;
-}
-.flores-texto{
-  max-width:600px;
-  margin:auto;
-  margin-top:20px;
-  font-size:18px;
-  color:#4a2a2a;
 }
 
 /* promesa */
@@ -179,15 +182,11 @@ function drop(symbol){
   document.body.appendChild(p);
   setTimeout(()=>p.remove(),7000);
 }
-
 function startEffect(symbol){
   clearInterval(effectInterval);
   effectInterval=setInterval(()=>drop(symbol),500);
 }
-
-function stopEffect(){
-  clearInterval(effectInterval);
-}
+function stopEffect(){ clearInterval(effectInterval); }
 
 /* teclado */
 function addNum(num){
@@ -244,9 +243,8 @@ function clearPass(){
 
   <p style="max-width:760px;margin:auto;font-size:18px;color:#4a2a2a;">
     Mi amor,<br><br>
-    No hay instante en el que no piense en usted...<br><br>
-    Le amo por lo que es y por lo que despierta en mí...<br><br>
-    <b>Con todo mi corazón,<br>Le amo May, muak.</b>
+    No hay instante en el que no piense en usted. Desde que llegó a mi vida, todo adquirió un significado distinto, más intenso, más verdadero...
+    <br><br><b>Con todo mi corazón,<br>Le amo May, muak.</b>
   </p>
 
   <button class="back" onclick="back()">Menú principal</button>
