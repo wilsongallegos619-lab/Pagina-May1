@@ -637,9 +637,9 @@ function back(){
 </div>
 
 <script>
-// ========== CARRUSELES FLUIDOS, MÁS RÁPIDOS Y LOOP INFINITO CORREGIDO ==========
+// ========== CARRUSELES CON TUS IMÁGENES ORIGINALES ==========
 (function() {
-  // LISTA COMPLETA DE TUS IMÁGENES
+  // TUS IMÁGENES ORIGINALES (las que ya tenías y funcionaban)
   const todasLasImagenes = [
     "imagen1.jpg",
     "imagen2.jpg",
@@ -669,7 +669,7 @@ function back(){
     "may13.jpeg"
   ];
   
-  // Dividir en dos grupos
+  // Dividir en dos grupos (mitad y mitad)
   const mitad = Math.ceil(todasLasImagenes.length / 2);
   const imagenesGrupo1 = todasLasImagenes.slice(0, mitad);
   const imagenesGrupo2 = todasLasImagenes.slice(mitad);
@@ -677,18 +677,21 @@ function back(){
   // ==================== CARRUSEL 1 (IZQUIERDA → DERECHA) ====================
   function iniciarCarruselIzquierda() {
     const track = document.getElementById('carouselLeft');
-    if (!track || imagenesGrupo1.length === 0) return;
+    if (!track) return;
     
-    // Crear 4 copias para loop infinito perfecto (más copias = nunca se acaba)
-    let items = [...imagenesGrupo1, ...imagenesGrupo1, ...imagenesGrupo1, ...imagenesGrupo1];
+    // Crear suficientes copias para loop infinito (5 copias para estar seguros)
+    let items = [];
+    for (let i = 0; i < 5; i++) {
+      items = [...items, ...imagenesGrupo1];
+    }
+    
     track.innerHTML = '';
     
-    // Agregar todas las imágenes
     items.forEach((imgSrc) => {
       const img = document.createElement('img');
       img.src = imgSrc;
-      img.style.width = "220px";
-      img.style.height = "220px";
+      img.style.width = "200px";
+      img.style.height = "200px";
       img.style.objectFit = "cover";
       img.style.borderRadius = "18px";
       img.style.boxShadow = "0 6px 15px rgba(0,0,0,0.2)";
@@ -696,11 +699,13 @@ function back(){
       track.appendChild(img);
     });
     
-    // Animación continua con requestAnimationFrame
     let position = 0;
-    const speed = 0.85; // Velocidad más rápida (antes 0.5)
+    const speed = 0.7;
     let animating = true;
     let animationId = null;
+    
+    const singleSetWidth = imagenesGrupo1.length * (200 + 12);
+    const totalWidth = items.length * (200 + 12);
     
     function animate() {
       if (!animating) {
@@ -709,10 +714,7 @@ function back(){
       }
       position -= speed;
       
-      // Calcular ancho de un set original
-      const singleSetWidth = imagenesGrupo1.length * (220 + 12);
-      
-      // Resetear posición cuando llegue al final de la primera copia
+      // Cuando se haya desplazado el ancho de 2 sets completos, reiniciar suavemente
       if (Math.abs(position) >= singleSetWidth * 2) {
         position = position + singleSetWidth;
       }
@@ -721,7 +723,6 @@ function back(){
       animationId = requestAnimationFrame(animate);
     }
     
-    // Pausar/reanudar al hacer hover
     const container = track.parentElement;
     container.addEventListener('mouseenter', () => { 
       animating = false; 
@@ -735,21 +736,24 @@ function back(){
     animate();
   }
   
-  // ==================== CARRUSEL 2 (DERECHA → IZQUIERDA) - CORREGIDO ====================
+  // ==================== CARRUSEL 2 (DERECHA → IZQUIERDA) ====================
   function iniciarCarruselDerecha() {
     const track = document.getElementById('carouselRight');
-    if (!track || imagenesGrupo2.length === 0) return;
+    if (!track) return;
     
-    // Crear 4 copias para loop infinito perfecto
-    let items = [...imagenesGrupo2, ...imagenesGrupo2, ...imagenesGrupo2, ...imagenesGrupo2];
+    // Crear suficientes copias para loop infinito (5 copias)
+    let items = [];
+    for (let i = 0; i < 5; i++) {
+      items = [...items, ...imagenesGrupo2];
+    }
+    
     track.innerHTML = '';
     
-    // Agregar todas las imágenes
     items.forEach((imgSrc) => {
       const img = document.createElement('img');
       img.src = imgSrc;
-      img.style.width = "220px";
-      img.style.height = "220px";
+      img.style.width = "200px";
+      img.style.height = "200px";
       img.style.objectFit = "cover";
       img.style.borderRadius = "18px";
       img.style.boxShadow = "0 6px 15px rgba(0,0,0,0.2)";
@@ -757,11 +761,12 @@ function back(){
       track.appendChild(img);
     });
     
-    // Animación continua hacia la derecha
     let position = 0;
-    const speed = 0.85; // Misma velocidad más rápida
+    const speed = 0.7;
     let animating = true;
     let animationId = null;
+    
+    const singleSetWidth = imagenesGrupo2.length * (200 + 12);
     
     function animate() {
       if (!animating) {
@@ -770,10 +775,6 @@ function back(){
       }
       position += speed;
       
-      // Calcular ancho de un set original
-      const singleSetWidth = imagenesGrupo2.length * (220 + 12);
-      
-      // Resetear posición cuando llegue al final
       if (position >= singleSetWidth * 2) {
         position = position - singleSetWidth;
       }
@@ -782,7 +783,6 @@ function back(){
       animationId = requestAnimationFrame(animate);
     }
     
-    // Pausar/reanudar al hacer hover
     const container = track.parentElement;
     container.addEventListener('mouseenter', () => { 
       animating = false; 
@@ -806,7 +806,6 @@ function back(){
     carruselesIniciados = true;
   }
   
-  // Sobrescribir openSec
   const originalOpenSec = window.openSec;
   window.openSec = function(id) {
     if (id === 'recuerdo' && !carruselesIniciados) {
@@ -817,7 +816,6 @@ function back(){
     originalOpenSec(id);
   };
   
-  // Si ya está visible
   if (document.getElementById('recuerdo') && getComputedStyle(document.getElementById('recuerdo')).display !== 'none') {
     setTimeout(() => {
       iniciarTodo();
