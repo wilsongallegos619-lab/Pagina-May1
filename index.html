@@ -64,7 +64,7 @@ input{
   background:#ffc0cb;
 }
 
-/* MENU BONITO */
+/* MENU PRO BONITO */
 #menu{
   display:none;
   margin-top:40px;
@@ -78,8 +78,8 @@ input{
 .menu-btn{
   width:180px;
   height:120px;
-  background:linear-gradient(135deg,#ff9eb5,#ffe4ec);
-  border-radius:22px;
+  background:linear-gradient(135deg,#ff9eb5,#ffd6e0,#ffeef2);
+  border-radius:25px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -88,20 +88,29 @@ input{
   font-size:18px;
   color:#5a2a2a;
   box-shadow:0 10px 25px rgba(0,0,0,.25);
-  transition:.3s;
+  transition:.4s;
   position:relative;
   overflow:hidden;
 }
-.menu-btn::after{
+
+/* brillo animado */
+.menu-btn::before{
   content:"";
   position:absolute;
-  width:200%;
-  height:200%;
-  background:radial-gradient(circle,rgba(255,255,255,0.4),transparent);
-  top:-50%;
-  left:-50%;
+  width:120%;
+  height:120%;
+  background:linear-gradient(120deg,transparent,rgba(255,255,255,0.5),transparent);
+  top:-100%;
+  left:-100%;
   transform:rotate(25deg);
+  animation:shine 4s infinite;
 }
+@keyframes shine{
+  0%{top:-100%; left:-100%;}
+  50%{top:100%; left:100%;}
+  100%{top:100%; left:100%;}
+}
+
 .menu-btn:hover{
   transform:scale(1.12);
   box-shadow:0 15px 35px rgba(255,105,180,.5);
@@ -141,7 +150,7 @@ input{
   z-index:1;
 }
 
-/* GALERIA BONITA */
+/* galeria */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
@@ -156,7 +165,7 @@ input{
   transition:.4s;
 }
 .gallery img:hover{
-  transform:scale(1.1) rotate(1deg);
+  transform:scale(1.1);
 }
 
 /* flores */
@@ -177,7 +186,7 @@ input{
 <body>
 
 <audio id="music" loop>
-  <source src="cancion.mp3" type="audio/mpeg">
+  <source src="cancion.mp3">
 </audio>
 
 <script>
@@ -199,7 +208,6 @@ function startEffect(symbol){
 }
 function stopEffect(){ clearInterval(effectInterval); }
 
-/* teclado */
 function addNum(num){
   const passInput=document.getElementById("pass");
   if(passInput.value.length<8){
@@ -210,7 +218,6 @@ function clearPass(){
   document.getElementById("pass").value="";
 }
 
-/* musica */
 let isMuted=false;
 function toggleMusic(){
   const music=document.getElementById("music");
@@ -265,26 +272,6 @@ function toggleMusic(){
   </div>
 </div>
 
-<!-- CARTA -->
-<div id="carta" class="section">
-  <iframe src="https://wilsongallegos619-lab.github.io/tulipanes1/"></iframe>
-
-  <p style="max-width:760px;margin:auto;font-size:18px;color:#4a2a2a;">
-Mi amor,<br><br>
-No hay instante en el que no piense en usted. Desde que llegó a mi vida, todo adquirió un significado distinto, más intenso, más verdadero. Amarle no fue una decisión; fue un destino que se impuso con dulzura, con fuerza y con una certeza que jamás había sentido antes. Le amo con una profundidad que las palabras apenas logran rozar, pero aun así deseo intentarlo, porque usted merece saberlo.<br><br>
-
-Le amo en cada pensamiento silencioso, en cada latido que se acelera cuando imagino su mirada. Le amo en la calma que me regala su presencia y en la ansiedad hermosa que siento cuando no está. Usted es esa persona que, sin proponérselo, se volvió indispensable, esa razón por la que el mundo parece un lugar más amable.<br><br>
-
-Cuando me besa, el tiempo pierde sentido. En esos besos encuentro refugio, promesas y una conexión que va más allá de lo físico. Me besa y todo se detiene; me besa y comprendo que el amor verdadero sí existe.<br><br>
-
-Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los momentos difíciles, porque amarle no depende de circunstancias, sino de una convicción profunda y honesta.<br><br>
-
-<b>Con todo mi corazón,<br>Le amo May, muak.</b>
-  </p>
-
-  <button class="back" onclick="back()">Menú principal</button>
-</div>
-
 <!-- RECUERDO -->
 <div id="recuerdo" class="section">
   <iframe src="https://wilsongallegos619-lab.github.io/corazon/"></iframe>
@@ -293,6 +280,10 @@ Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los moment
     <h2>Usted es el amor de mi vida.</h2>
 
     <div class="gallery">
+      <img src="imagen1.jpg">
+      <img src="imagen2.jpg">
+      <img src="imagen3.jpg">
+
       <img src="foto1.jpeg">
       <img src="foto2.jpeg">
       <img src="foto3.jpeg">
@@ -309,15 +300,28 @@ Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los moment
   </div>
 </div>
 
-<!-- FLORES -->
-<div id="flores" class="section">
-  <iframe src="https://wilsongallegos619-lab.github.io/flores-amarillas/"></iframe>
+<!-- BUZON -->
+<div id="buzon" class="section">
+  <h2>📩 Buzón</h2>
+
+  <div class="menu-grid">
+    <div class="menu-btn" onclick="openSec('mensaje1')">💌 Un mensaje recibido</div>
+    <div class="menu-btn">📭 Mensaje vacío</div>
+    <div class="menu-btn">📭 Mensaje vacío</div>
+  </div>
+
   <button class="back" onclick="back()">Menú principal</button>
+</div>
+
+<!-- MENSAJE -->
+<div id="mensaje1" class="section">
+  <iframe src="https://wilsongallegos619-lab.github.io/carta/" style="width:100%; height:600px;"></iframe>
+  <button class="back" onclick="openSec('buzon')">Volver al buzón</button>
 </div>
 
 <!-- PROMESA -->
 <div id="promesa" class="section">
-  <div style="text-align:center; max-width:600px; margin:auto;">
+  <div style="text-align:center;">
     <h2>Una Promesa Sellada</h2>
 
     <p>
@@ -326,61 +330,35 @@ Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los moment
       Prometo seguir escribiendo nuestra historia.
     </p>
 
-    <img src="imagen4.jpg" width="260" style="border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,.5);">
+    <img src="imagen4.jpg" width="260">
+    <br><br>
+    <img src="imagen1.jpeg" width="200">
+    <img src="imagen2.jpeg" width="200">
 
-    <br>
+    <br><br>
     <button class="back" onclick="back()">Menú principal</button>
   </div>
 </div>
 
-<!-- BUZON -->
-<div id="buzon" class="section">
-  <h2>📩 Buzón</h2>
-
-  <div style="max-width:600px; margin:auto;">
-    <div class="menu-btn" onclick="window.open('https://wilsongallegos619-lab.github.io/carta/')">
-      💌 Un mensaje recibido
-    </div>
-
-    <div class="menu-btn">📭 Mensaje vacío</div>
-    <div class="menu-btn">📭 Mensaje vacío</div>
-    <div class="menu-btn">📭 Mensaje vacío</div>
-  </div>
-
-  <button class="back" onclick="back()">Menú principal</button>
-</div>
-
-<!-- BOTON MUSICA -->
-<button id="muteBtn" onclick="toggleMusic()" style="
-position:fixed;
-bottom:20px;
-right:20px;
-padding:12px;
-border-radius:50%;
-background:#ffb6c1;
-border:none;
-box-shadow:0 5px 15px rgba(0,0,0,.3);
-cursor:pointer;
-z-index:10;
-">🔊</button>
+<button id="muteBtn" onclick="toggleMusic()" style="position:fixed;bottom:20px;right:20px;">🔊</button>
 
 <script>
 function entrar(){
   const passInput=document.getElementById("pass").value;
   if(passInput==="22102025"){
-    document.getElementById("login").style.display="none";
-    document.getElementById("menu").style.display="block";
-    document.getElementById("music").play().catch(()=>{});
+    login.style.display="none";
+    menu.style.display="block";
+    music.play();
     startEffect("💗");
   }else{
-    document.getElementById("msg").textContent="Contraseña incorrecta 😢";
+    msg.textContent="Contraseña incorrecta 😢";
   }
 }
 
 function openSec(id){
   stopEffect();
   document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-  document.getElementById("menu").style.display="none";
+  menu.style.display="none";
   document.getElementById(id).style.display="block";
 
   if(id==="carta" || id==="flores") startEffect("🌸");
@@ -391,7 +369,7 @@ function openSec(id){
 function back(){
   stopEffect();
   document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-  document.getElementById("menu").style.display="block";
+  menu.style.display="block";
 }
 </script>
 
