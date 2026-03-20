@@ -349,17 +349,30 @@ style="position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-in
 <div id="recuerdo" class="section">
   <iframe src="https://wilsongallegos619-lab.github.io/corazon/" style="position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-index:0; pointer-events:none;"></iframe>
   
-  <div class="contenido" style="position:relative; z-index:2; background:rgba(255,245,240,0.85); border-radius:40px; margin:20px; padding:20px; backdrop-filter:blur(3px);">
-    <h2 style="color:#b33b2c;">💖 Usted es el amor de mi vida 💖</h2>
+  <div class="contenido" style="position:relative; z-index:2; padding:30px 20px;">
+    <h2 style="color:#b33b2c; text-align:center; font-size:2rem; text-shadow:2px 2px 4px rgba(0,0,0,0.1); margin-bottom:20px;">💖 Usted es el amor de mi vida 💖</h2>
     
-    <!-- CARRUSEL INFINITO AUTOMÁTICO -->
-    <div style="width:100%; overflow:hidden; border-radius:28px; margin:25px 0; box-shadow:0 15px 35px rgba(0,0,0,0.2); background:#fff0e6; padding:15px 0;">
-      <div id="carouselTrack" style="display:flex; gap:20px; will-change:transform; transition:transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); width:max-content;"></div>
+    <!-- Carrusel 1: se mueve de IZQUIERDA a DERECHA -->
+    <div style="margin-bottom: 40px;">
+      <p style="text-align:center; font-size:0.9rem; color:#a55a3a; margin-bottom:10px;">🌸 Nuestros momentos juntos 🌸</p>
+      <div style="width:100%; overflow:hidden;">
+        <div id="carouselLeft" style="display:flex; gap:20px; will-change:transform; width:max-content;"></div>
+      </div>
     </div>
     
-    <p style="font-size:1rem; color:#5a2e2a; font-style:italic;">✨ Cada foto, un tesoro. Cada momento, una promesa. ✨</p>
+    <!-- Carrusel 2: se mueve de DERECHA a IZQUIERDA -->
+    <div>
+      <p style="text-align:center; font-size:0.9rem; color:#a55a3a; margin-bottom:10px;">✨ Recuerdos que atesoro ✨</p>
+      <div style="width:100%; overflow:hidden;">
+        <div id="carouselRight" style="display:flex; gap:20px; will-change:transform; width:max-content;"></div>
+      </div>
+    </div>
     
-    <button class="back" onclick="back()" style="margin-top:20px;">Menú principal</button>
+    <p style="text-align:center; font-size:1rem; color:#7a4a3a; font-style:italic; margin-top:40px;">✨ Cada fotografía, un latido. Cada recuerdo, un pedacito de nosotros. ✨</p>
+    
+    <div style="text-align:center; margin-top:30px;">
+      <button class="back" onclick="back()" style="background:#c27e5a; color:white; border:none; padding:12px 28px; border-radius:40px; font-size:1rem; cursor:pointer; box-shadow:0 3px 8px rgba(0,0,0,0.2); transition:0.2s;">Menú principal</button>
+    </div>
   </div>
 </div>
   
@@ -632,12 +645,11 @@ function back(){
   <button class="back" onclick="openSec('meses')">Volver</button>
 </div>
 
-<!-- ========== AQUÍ VA EL CÓDIGO DEL CARRUSEL ========== -->
 <script>
-// ========== CARRUSEL INFINITO AUTOMÁTICO EN RECUERDO ==========
+// ========== DOS CARRUSELES INFINITOS - DIRECCIONES OPUESTAS ==========
 (function() {
-  // Lista de todas tus imágenes (agrega o quita según las que tengas)
-  const imagenes = [
+  // LISTA COMPLETA DE TUS IMÁGENES
+  const todasLasImagenes = [
     "imagen1.jpg",
     "imagen2.jpg",
     "imagen3.jpg",
@@ -666,134 +678,221 @@ function back(){
     "may13.jpeg"
   ];
   
-  let track = null;
-  let currentIndex = 0;
-  let autoInterval = null;
-  let isAnimating = false;
-  let itemWidth = 220;
-  let totalOriginal = imagenes.length;
-  let duplicatedItems = [];
+  // Dividir en dos grupos (mitad y mitad)
+  const mitad = Math.ceil(todasLasImagenes.length / 2);
+  const imagenesIzquierda = todasLasImagenes.slice(0, mitad);
+  const imagenesDerecha = todasLasImagenes.slice(mitad);
   
-  function prepareDuplicated() {
-    duplicatedItems = [...imagenes, ...imagenes, ...imagenes];
+  // ========== CARRUSEL 1: IZQUIERDA → DERECHA ==========
+  let trackLeft = null;
+  let currentLeftIndex = 0;
+  let autoLeftInterval = null;
+  let isLeftAnimating = false;
+  let itemWidth = 280;
+  let totalLeftOriginal = imagenesIzquierda.length;
+  let duplicatedLeft = [];
+  
+  function prepareDuplicatedLeft() {
+    duplicatedLeft = [...imagenesIzquierda, ...imagenesIzquierda, ...imagenesIzquierda];
   }
   
-  function renderTrack() {
-    if (!track) return;
-    track.innerHTML = '';
-    duplicatedItems.forEach((imgSrc, idx) => {
-      const imgContainer = document.createElement('div');
-      imgContainer.style.flex = "0 0 auto";
-      imgContainer.style.width = "200px";
-      imgContainer.style.borderRadius = "20px";
-      imgContainer.style.overflow = "hidden";
-      imgContainer.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
-      imgContainer.style.backgroundColor = "#fff";
-      imgContainer.style.padding = "8px";
-      
+  function renderTrackLeft() {
+    if (!trackLeft) return;
+    trackLeft.innerHTML = '';
+    duplicatedLeft.forEach((imgSrc) => {
       const img = document.createElement('img');
       img.src = imgSrc;
-      img.style.width = "100%";
-      img.style.height = "180px";
+      img.style.width = "280px";
+      img.style.height = "280px";
       img.style.objectFit = "cover";
-      img.style.borderRadius = "14px";
+      img.style.borderRadius = "20px";
+      img.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
       img.style.display = "block";
-      
-      imgContainer.appendChild(img);
-      track.appendChild(imgContainer);
+      img.style.transition = "transform 0.3s ease";
+      img.onmouseenter = () => { img.style.transform = "scale(1.02)"; };
+      img.onmouseleave = () => { img.style.transform = "scale(1)"; };
+      trackLeft.appendChild(img);
     });
   }
   
-  function updatePosition(animate = true) {
-    if (!track) return;
+  function updatePositionLeft(animate = true) {
+    if (!trackLeft) return;
     if (animate) {
-      track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+      trackLeft.style.transition = 'transform 0.9s linear';
     } else {
-      track.style.transition = 'none';
+      trackLeft.style.transition = 'none';
     }
-    const offset = -currentIndex * itemWidth;
-    track.style.transform = `translateX(${offset}px)`;
+    const offset = -currentLeftIndex * itemWidth;
+    trackLeft.style.transform = `translateX(${offset}px)`;
   }
   
-  function handleInfiniteLoop() {
-    const totalDuplicated = duplicatedItems.length;
-    if (currentIndex < totalOriginal) {
-      currentIndex = currentIndex + totalOriginal;
-      updatePosition(false);
-    } else if (currentIndex >= totalDuplicated - totalOriginal) {
-      currentIndex = currentIndex - totalOriginal;
-      updatePosition(false);
+  function handleInfiniteLoopLeft() {
+    const totalDuplicated = duplicatedLeft.length;
+    if (currentLeftIndex < totalLeftOriginal) {
+      currentLeftIndex = currentLeftIndex + totalLeftOriginal;
+      updatePositionLeft(false);
+    } else if (currentLeftIndex >= totalDuplicated - totalLeftOriginal) {
+      currentLeftIndex = currentLeftIndex - totalLeftOriginal;
+      updatePositionLeft(false);
     }
   }
   
-  function nextSlide() {
-    if (isAnimating) return;
-    isAnimating = true;
-    currentIndex++;
-    updatePosition(true);
-    
+  function nextSlideLeft() {
+    if (isLeftAnimating) return;
+    isLeftAnimating = true;
+    currentLeftIndex++;
+    updatePositionLeft(true);
     setTimeout(() => {
-      handleInfiniteLoop();
-      isAnimating = false;
-    }, 650);
+      handleInfiniteLoopLeft();
+      isLeftAnimating = false;
+    }, 950);
   }
   
-  function startAutoPlay() {
-    if (autoInterval) clearInterval(autoInterval);
-    autoInterval = setInterval(() => {
-      nextSlide();
-    }, 2800);
+  function startAutoLeft() {
+    if (autoLeftInterval) clearInterval(autoLeftInterval);
+    autoLeftInterval = setInterval(() => {
+      nextSlideLeft();
+    }, 3200);
   }
   
-  function stopAutoPlay() {
-    if (autoInterval) {
-      clearInterval(autoInterval);
-      autoInterval = null;
+  function stopAutoLeft() {
+    if (autoLeftInterval) {
+      clearInterval(autoLeftInterval);
+      autoLeftInterval = null;
     }
   }
   
-  function initCarousel() {
-    track = document.getElementById('carouselTrack');
-    if (!track) return;
-    
-    prepareDuplicated();
-    renderTrack();
-    
-    const firstItem = track.children[0];
-    if (firstItem) {
-      const width = firstItem.offsetWidth;
-      const gap = 20;
-      itemWidth = width + gap;
+  // ========== CARRUSEL 2: DERECHA → IZQUIERDA ==========
+  let trackRight = null;
+  let currentRightIndex = 0;
+  let autoRightInterval = null;
+  let isRightAnimating = false;
+  let totalRightOriginal = imagenesDerecha.length;
+  let duplicatedRight = [];
+  
+  function prepareDuplicatedRight() {
+    duplicatedRight = [...imagenesDerecha, ...imagenesDerecha, ...imagenesDerecha];
+  }
+  
+  function renderTrackRight() {
+    if (!trackRight) return;
+    trackRight.innerHTML = '';
+    duplicatedRight.forEach((imgSrc) => {
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.style.width = "280px";
+      img.style.height = "280px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "20px";
+      img.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+      img.style.display = "block";
+      img.style.transition = "transform 0.3s ease";
+      img.onmouseenter = () => { img.style.transform = "scale(1.02)"; };
+      img.onmouseleave = () => { img.style.transform = "scale(1)"; };
+      trackRight.appendChild(img);
+    });
+  }
+  
+  function updatePositionRight(animate = true) {
+    if (!trackRight) return;
+    if (animate) {
+      trackRight.style.transition = 'transform 0.9s linear';
+    } else {
+      trackRight.style.transition = 'none';
     }
-    
-    currentIndex = totalOriginal;
-    updatePosition(false);
-    startAutoPlay();
-    
-    const carouselContainer = track.parentElement;
-    if (carouselContainer) {
-      carouselContainer.addEventListener('mouseenter', stopAutoPlay);
-      carouselContainer.addEventListener('mouseleave', startAutoPlay);
+    const offset = -currentRightIndex * itemWidth;
+    trackRight.style.transform = `translateX(${offset}px)`;
+  }
+  
+  function handleInfiniteLoopRight() {
+    const totalDuplicated = duplicatedRight.length;
+    if (currentRightIndex < totalRightOriginal) {
+      currentRightIndex = currentRightIndex + totalRightOriginal;
+      updatePositionRight(false);
+    } else if (currentRightIndex >= totalDuplicated - totalRightOriginal) {
+      currentRightIndex = currentRightIndex - totalRightOriginal;
+      updatePositionRight(false);
     }
   }
   
-  let carouselInitialized = false;
+  function nextSlideRight() {
+    if (isRightAnimating) return;
+    isRightAnimating = true;
+    currentRightIndex++;
+    updatePositionRight(true);
+    setTimeout(() => {
+      handleInfiniteLoopRight();
+      isRightAnimating = false;
+    }, 950);
+  }
+  
+  function startAutoRight() {
+    if (autoRightInterval) clearInterval(autoRightInterval);
+    autoRightInterval = setInterval(() => {
+      nextSlideRight();
+    }, 3200);
+  }
+  
+  function stopAutoRight() {
+    if (autoRightInterval) {
+      clearInterval(autoRightInterval);
+      autoRightInterval = null;
+    }
+  }
+  
+  // ========== INICIALIZAR ==========
+  let carruselesInicializados = false;
+  
+  function initCarousels() {
+    trackLeft = document.getElementById('carouselLeft');
+    trackRight = document.getElementById('carouselRight');
+    
+    if (!trackLeft || !trackRight) return;
+    
+    itemWidth = 280 + 20;
+    
+    prepareDuplicatedLeft();
+    renderTrackLeft();
+    currentLeftIndex = totalLeftOriginal;
+    updatePositionLeft(false);
+    startAutoLeft();
+    
+    prepareDuplicatedRight();
+    renderTrackRight();
+    currentRightIndex = totalRightOriginal;
+    updatePositionRight(false);
+    startAutoRight();
+    
+    const containerLeft = trackLeft.parentElement;
+    const containerRight = trackRight.parentElement;
+    
+    if (containerLeft) {
+      containerLeft.addEventListener('mouseenter', stopAutoLeft);
+      containerLeft.addEventListener('mouseleave', startAutoLeft);
+    }
+    
+    if (containerRight) {
+      containerRight.addEventListener('mouseenter', stopAutoRight);
+      containerRight.addEventListener('mouseleave', startAutoRight);
+    }
+    
+    carruselesInicializados = true;
+  }
+  
   const originalOpenSec = window.openSec;
   window.openSec = function(id) {
-    if (id === 'recuerdo' && !carouselInitialized) {
+    if (id === 'recuerdo' && !carruselesInicializados) {
       setTimeout(() => {
-        initCarousel();
-        carouselInitialized = true;
-      }, 100);
+        initCarousels();
+      }, 150);
     }
     originalOpenSec(id);
   };
   
-  if (document.getElementById('recuerdo') && document.getElementById('recuerdo').style.display !== 'none') {
+  if (document.getElementById('recuerdo') && getComputedStyle(document.getElementById('recuerdo')).display !== 'none') {
     setTimeout(() => {
-      initCarousel();
-      carouselInitialized = true;
-    }, 100);
+      initCarousels();
+    }, 150);
   }
 })();
 </script>
