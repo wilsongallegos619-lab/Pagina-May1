@@ -64,7 +64,7 @@ input{
   background:#ffc0cb;
 }
 
-/* MENU MEJORADO */
+/* MENU BONITO */
 #menu{
   display:none;
   margin-top:40px;
@@ -76,10 +76,10 @@ input{
   flex-wrap:wrap;
 }
 .menu-btn{
-  width:170px;
+  width:180px;
   height:120px;
-  background:linear-gradient(135deg,#ffc1cc,#ffe4ec);
-  border-radius:20px;
+  background:linear-gradient(135deg,#ff9eb5,#ffe4ec);
+  border-radius:22px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -87,12 +87,24 @@ input{
   font-weight:bold;
   font-size:18px;
   color:#5a2a2a;
-  box-shadow:0 8px 20px rgba(0,0,0,.25);
+  box-shadow:0 10px 25px rgba(0,0,0,.25);
   transition:.3s;
+  position:relative;
+  overflow:hidden;
+}
+.menu-btn::after{
+  content:"";
+  position:absolute;
+  width:200%;
+  height:200%;
+  background:radial-gradient(circle,rgba(255,255,255,0.4),transparent);
+  top:-50%;
+  left:-50%;
+  transform:rotate(25deg);
 }
 .menu-btn:hover{
-  transform:scale(1.1);
-  box-shadow:0 12px 25px rgba(255,105,180,.4);
+  transform:scale(1.12);
+  box-shadow:0 15px 35px rgba(255,105,180,.5);
 }
 
 /* secciones */
@@ -106,7 +118,7 @@ input{
   padding:10px 16px;
 }
 
-/* carta MÁS GRANDE */
+/* carta */
 #carta{background:#ffe4ec;}
 #carta iframe{
   width:100%;
@@ -114,7 +126,7 @@ input{
   border:none;
 }
 
-/* recuerdo SOLO tu fondo */
+/* recuerdo fondo */
 #recuerdo iframe{
   position:fixed;
   top:0;
@@ -129,26 +141,25 @@ input{
   z-index:1;
 }
 
-/* GALERÍA TIPO ÁLBUM */
+/* GALERIA BONITA */
 .gallery{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
   gap:15px;
-  max-width:900px;
+  max-width:1000px;
   margin:auto;
 }
-
 .gallery img{
   width:100%;
-  border-radius:14px;
+  border-radius:16px;
   box-shadow:0 5px 15px rgba(0,0,0,.3);
-  transition:.3s;
+  transition:.4s;
 }
 .gallery img:hover{
-  transform:scale(1.08);
+  transform:scale(1.1) rotate(1deg);
 }
 
-/* FLORES MÁS GRANDE */
+/* flores */
 #flores iframe{
   width:100%;
   height:650px;
@@ -198,6 +209,22 @@ function addNum(num){
 function clearPass(){
   document.getElementById("pass").value="";
 }
+
+/* musica */
+let isMuted=false;
+function toggleMusic(){
+  const music=document.getElementById("music");
+  const btn=document.getElementById("muteBtn");
+
+  if(isMuted){
+    music.play();
+    btn.textContent="🔊";
+  }else{
+    music.pause();
+    btn.textContent="🔇";
+  }
+  isMuted=!isMuted;
+}
 </script>
 
 <!-- LOGIN -->
@@ -234,6 +261,7 @@ function clearPass(){
     <div class="menu-btn" onclick="openSec('recuerdo')">🌸 Recuerdo</div>
     <div class="menu-btn" onclick="openSec('promesa')">✨ Promesa</div>
     <div class="menu-btn" onclick="openSec('flores')">🌼 21 de marzo</div>
+    <div class="menu-btn" onclick="openSec('buzon')">📩 Buzón</div>
   </div>
 </div>
 
@@ -242,9 +270,16 @@ function clearPass(){
   <iframe src="https://wilsongallegos619-lab.github.io/tulipanes1/"></iframe>
 
   <p style="max-width:760px;margin:auto;font-size:18px;color:#4a2a2a;">
-    Mi amor,<br><br>
-    No hay instante en el que no piense en usted. Desde que llegó a mi vida, todo adquirió un significado distinto, más intenso, más verdadero...
-    <br><br><b>Con todo mi corazón,<br>Le amo May, muak.</b>
+Mi amor,<br><br>
+No hay instante en el que no piense en usted. Desde que llegó a mi vida, todo adquirió un significado distinto, más intenso, más verdadero. Amarle no fue una decisión; fue un destino que se impuso con dulzura, con fuerza y con una certeza que jamás había sentido antes. Le amo con una profundidad que las palabras apenas logran rozar, pero aun así deseo intentarlo, porque usted merece saberlo.<br><br>
+
+Le amo en cada pensamiento silencioso, en cada latido que se acelera cuando imagino su mirada. Le amo en la calma que me regala su presencia y en la ansiedad hermosa que siento cuando no está. Usted es esa persona que, sin proponérselo, se volvió indispensable, esa razón por la que el mundo parece un lugar más amable.<br><br>
+
+Cuando me besa, el tiempo pierde sentido. En esos besos encuentro refugio, promesas y una conexión que va más allá de lo físico. Me besa y todo se detiene; me besa y comprendo que el amor verdadero sí existe.<br><br>
+
+Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los momentos difíciles, porque amarle no depende de circunstancias, sino de una convicción profunda y honesta.<br><br>
+
+<b>Con todo mi corazón,<br>Le amo May, muak.</b>
   </p>
 
   <button class="back" onclick="back()">Menú principal</button>
@@ -258,12 +293,16 @@ function clearPass(){
     <h2>Usted es el amor de mi vida.</h2>
 
     <div class="gallery">
-      <img src="imagen1.jpg">
-      <img src="imagen2.jpg">
-      <img src="imagen3.jpg">
-      <img src="imagen4.jpg">
-      <img src="imagen5.jpg">
-      <img src="imagen6.jpg">
+      <img src="foto1.jpeg">
+      <img src="foto2.jpeg">
+      <img src="foto3.jpeg">
+      <img src="foto4.jpeg">
+      <img src="foto5.jpeg">
+      <img src="foto6.jpeg">
+      <img src="foto7.jpeg">
+      <img src="foto8.jpeg">
+      <img src="foto9.jpeg">
+      <img src="foto10.jpeg">
     </div>
 
     <button class="back" onclick="back()">Menú principal</button>
@@ -273,23 +312,57 @@ function clearPass(){
 <!-- FLORES -->
 <div id="flores" class="section">
   <iframe src="https://wilsongallegos619-lab.github.io/flores-amarillas/"></iframe>
-
   <button class="back" onclick="back()">Menú principal</button>
 </div>
 
 <!-- PROMESA -->
 <div id="promesa" class="section">
-  <h2>Una Promesa Sellada</h2>
-  <p>
-    Prometo cuidar su corazón como si fuera el mío.<br>
-    Prometo que cada viaje valdrá la pena.<br>
-    Prometo seguir escribiendo nuestra historia.
-  </p>
+  <div style="text-align:center; max-width:600px; margin:auto;">
+    <h2>Una Promesa Sellada</h2>
 
-  <img src="imagen4.jpg" width="260">
+    <p>
+      Prometo cuidar su corazón como si fuera el mío.<br>
+      Prometo que cada viaje valdrá la pena.<br>
+      Prometo seguir escribiendo nuestra historia.
+    </p>
+
+    <img src="imagen4.jpg" width="260" style="border-radius:12px; box-shadow:0 5px 20px rgba(0,0,0,.5);">
+
+    <br>
+    <button class="back" onclick="back()">Menú principal</button>
+  </div>
+</div>
+
+<!-- BUZON -->
+<div id="buzon" class="section">
+  <h2>📩 Buzón</h2>
+
+  <div style="max-width:600px; margin:auto;">
+    <div class="menu-btn" onclick="window.open('https://wilsongallegos619-lab.github.io/carta/')">
+      💌 Un mensaje recibido
+    </div>
+
+    <div class="menu-btn">📭 Mensaje vacío</div>
+    <div class="menu-btn">📭 Mensaje vacío</div>
+    <div class="menu-btn">📭 Mensaje vacío</div>
+  </div>
 
   <button class="back" onclick="back()">Menú principal</button>
 </div>
+
+<!-- BOTON MUSICA -->
+<button id="muteBtn" onclick="toggleMusic()" style="
+position:fixed;
+bottom:20px;
+right:20px;
+padding:12px;
+border-radius:50%;
+background:#ffb6c1;
+border:none;
+box-shadow:0 5px 15px rgba(0,0,0,.3);
+cursor:pointer;
+z-index:10;
+">🔊</button>
 
 <script>
 function entrar(){
