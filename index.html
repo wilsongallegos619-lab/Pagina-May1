@@ -25,19 +25,50 @@ body{
   to{transform:translateY(110vh);}
 }
 
-/* login */
+/* LOGIN */
 #login{
-  margin-top:120px;
+  margin-top:100px;
+  animation:fadeIn 2s ease;
 }
-input,button{
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
+}
+
+input{
   padding:10px;
   border-radius:8px;
   border:none;
-  font-size:16px;
+  font-size:18px;
+  text-align:center;
+  margin-top:10px;
 }
+
 button{
-  background:#ffb6c1;
+  border:none;
   cursor:pointer;
+}
+
+/* teclado */
+.teclado{
+  display:grid;
+  grid-template-columns:repeat(3,80px);
+  gap:10px;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.teclado button{
+  padding:15px;
+  font-size:18px;
+  background:#fff0f5;
+  border-radius:12px;
+  box-shadow:0 5px 10px rgba(0,0,0,.2);
+  transition:.2s;
+}
+.teclado button:hover{
+  transform:scale(1.1);
+  background:#ffc0cb;
 }
 
 /* menu */
@@ -49,6 +80,7 @@ button{
   display:flex;
   justify-content:center;
   gap:20px;
+  flex-wrap:wrap;
 }
 .menu-btn{
   width:160px;
@@ -61,10 +93,8 @@ button{
   cursor:pointer;
   font-weight:bold;
   box-shadow:0 5px 15px rgba(0,0,0,.2);
-
-  /* ✨ animación agregada */
   animation:pulseBtn 3s infinite;
-  transition:transform .3s, box-shadow .3s;
+  transition:.3s;
 }
 .menu-btn:hover{
   transform:scale(1.08);
@@ -99,18 +129,59 @@ button{
 
 /* recuerdo */
 #recuerdo{
+  position:relative;
   background:#fff7fb;
 }
+#recuerdo iframe.fondo{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  border:none;
+  z-index:0;
+  opacity:0.25;
+}
+#recuerdo .contenido{
+  position:relative;
+  z-index:1;
+}
+
+/* galería */
 .gallery img{
   width:220px;
   border-radius:14px;
   margin:10px;
   box-shadow:0 5px 15px rgba(0,0,0,.3);
-  transition:transform .3s, box-shadow .3s;
+  transition:.3s;
 }
 .gallery img:hover{
   transform:scale(1.08);
   box-shadow:0 15px 30px rgba(0,0,0,.45);
+}
+
+/* detalle flores */
+.detalle{
+  margin-top:30px;
+  max-width:600px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.detalle button{
+  background:#ffd54f;
+  font-size:18px;
+  padding:12px 18px;
+  border-radius:12px;
+  box-shadow:0 5px 15px rgba(0,0,0,.3);
+  transition:.3s;
+}
+.detalle button:hover{
+  transform:scale(1.1);
+}
+.detalle p{
+  margin-top:15px;
+  font-size:17px;
+  color:#4a2a2a;
 }
 
 /* promesa */
@@ -119,7 +190,7 @@ button{
   color:white;
 }
 
-/* 💓 palpitación suave de imágenes */
+/* animaciones imágenes */
 img{
   animation:breath 4s ease-in-out infinite;
 }
@@ -128,8 +199,6 @@ img{
   50%{transform:scale(1.03);}
   100%{transform:scale(1);}
 }
-
-/* 🎈 imagen principal flotando */
 #menu img{
   animation:float 6s ease-in-out infinite;
 }
@@ -168,14 +237,45 @@ function startEffect(symbol){
 function stopEffect(){
   clearInterval(effectInterval);
 }
+
+/* teclado */
+function addNum(num){
+  const passInput=document.getElementById("pass");
+  if(passInput.value.length<8){
+    passInput.value+=num;
+  }
+}
+function clearPass(){
+  document.getElementById("pass").value="";
+}
 </script>
 
 <!-- LOGIN -->
 <div id="login">
   <h1>Una Cajita Para Usted 💌</h1>
-  <input type="password" id="pass" placeholder="Contraseña">
-  <br><br>
-  <button onclick="entrar()">Abrir</button>
+
+  <p style="color:#6a3d3d; max-width:400px; margin:auto;">
+    Hay cosas que solo se abren con amor...  
+    Intente recordar nuestra fecha especial 💖
+  </p>
+
+  <input type="password" id="pass" placeholder="••••••••" readonly>
+
+  <div class="teclado">
+    <button onclick="addNum('1')">1</button>
+    <button onclick="addNum('2')">2</button>
+    <button onclick="addNum('3')">3</button>
+    <button onclick="addNum('4')">4</button>
+    <button onclick="addNum('5')">5</button>
+    <button onclick="addNum('6')">6</button>
+    <button onclick="addNum('7')">7</button>
+    <button onclick="addNum('8')">8</button>
+    <button onclick="addNum('9')">9</button>
+    <button onclick="clearPass()">❌</button>
+    <button onclick="addNum('0')">0</button>
+    <button onclick="entrar()">💖</button>
+  </div>
+
   <p id="msg" style="color:red;"></p>
 </div>
 
@@ -195,16 +295,7 @@ function stopEffect(){
   <iframe src="https://wilsongallegos619-lab.github.io/tulipanes1/"></iframe>
 
   <p style="max-width:760px;margin:auto;font-size:18px;color:#4a2a2a;">
-    Mi amor,<br><br>
-    No hay instante en el que no piense en usted. Desde que llegó a mi vida, todo adquirió un significado distinto, más intenso, más verdadero. Amarle no fue una decisión; fue un destino que se impuso con dulzura, con fuerza y con una certeza que jamás había sentido antes. Le amo con una profundidad que las palabras apenas logran rozar, pero aun así deseo intentarlo, porque usted merece saberlo.<br><br>
-
-    Le amo en cada pensamiento silencioso, en cada latido que se acelera cuando imagino su mirada. Le amo en la calma que me regala su presencia y en la ansiedad hermosa que siento cuando no está. Usted es esa persona que, sin proponérselo, se volvió indispensable, esa razón por la que el mundo parece un lugar más amable.<br><br>
-
-    Cuando me besa, el tiempo pierde sentido. En esos besos encuentro refugio, promesas y una conexión que va más allá de lo físico. Me besa y todo se detiene; me besa y comprendo que el amor verdadero sí existe.<br><br>
-
-    Le amo por lo que es y por lo que despierta en mí. Le amo incluso en los momentos difíciles, porque amarle no depende de circunstancias, sino de una convicción profunda y honesta.<br><br>
-
-    <b>Con todo mi corazón,<br>Le amo May, muak.</b>
+    Mi amor... siempre vuelve a usted 💖
   </p>
 
   <button class="back" onclick="back()">Menú principal</button>
@@ -212,15 +303,36 @@ function stopEffect(){
 
 <!-- RECUERDO -->
 <div id="recuerdo" class="section">
-  <h2>Usted es el amor de mi vida.</h2>
 
-  <div class="gallery">
-    <img src="imagen1.jpg">
-    <img src="imagen2.jpg">
-    <img src="imagen3.jpg">
+  <iframe class="fondo" src="https://wilsongallegos619-lab.github.io/corazon/"></iframe>
+
+  <div class="contenido">
+    <h2>Usted es el amor de mi vida.</h2>
+
+    <div class="gallery">
+      <img src="imagen1.jpg">
+      <img src="imagen2.jpg">
+      <img src="imagen3.jpg">
+      <img src="imagen4.jpg">
+      <img src="imagen5.jpg">
+      <img src="imagen6.jpg">
+    </div>
+
+    <div class="detalle">
+      <button onclick="window.open('https://wilsongallegos619-lab.github.io/flores-amarillas/')">
+        🌼 21 de marzo
+      </button>
+
+      <p>
+        Aunque hoy la distancia no nos permita vernos, quiero que sienta mi amor en cada detalle.  
+        Este pequeño regalo es mi forma de abrazarla desde lejos, de recordarle que siempre está en mi corazón  
+        y que no importa cuántos kilómetros existan, siempre voy a encontrar la manera de hacerla sonreír.  
+        Porque usted es mi todo 💛
+      </p>
+    </div>
+
+    <button class="back" onclick="back()">Menú principal</button>
   </div>
-
-  <button class="back" onclick="back()">Menú principal</button>
 </div>
 
 <!-- PROMESA -->
@@ -240,20 +352,21 @@ function stopEffect(){
 
 <script>
 function entrar(){
-  if(pass.value==="22102025"){
-    login.style.display="none";
-    menu.style.display="block";
-    document.getElementById("music").play();
+  const passInput=document.getElementById("pass").value;
+  if(passInput==="22102025"){
+    document.getElementById("login").style.display="none";
+    document.getElementById("menu").style.display="block";
+    document.getElementById("music").play().catch(()=>{});
     startEffect("💗");
   }else{
-    msg.textContent="Contraseña incorrecta 😢";
+    document.getElementById("msg").textContent="Contraseña incorrecta 😢";
   }
 }
 
 function openSec(id){
   stopEffect();
   document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-  menu.style.display="none";
+  document.getElementById("menu").style.display="none";
   document.getElementById(id).style.display="block";
 
   if(id==="carta") startEffect("🌸");
@@ -264,7 +377,7 @@ function openSec(id){
 function back(){
   stopEffect();
   document.querySelectorAll(".section").forEach(s=>s.style.display="none");
-  menu.style.display="block";
+  document.getElementById("menu").style.display="block";
 }
 </script>
 
