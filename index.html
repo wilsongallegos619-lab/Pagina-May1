@@ -231,6 +231,28 @@ input{
   transform:scale(1.2);
   background:rgba(255,192,203,0.4);
 } 
+/* ===== CARRUSEL TABLET STYLE ===== */
+
+.carrusel-track{
+  display:flex;
+  gap:18px;
+  width:max-content;
+  will-change:transform;
+}
+
+.carrusel-track img{
+  width:230px;
+  height:230px;
+  object-fit:cover;
+  border-radius:20px;
+  box-shadow:0 8px 22px rgba(0,0,0,.25);
+  transition:transform .6s ease;
+}
+
+/* imagen central estilo Instagram */
+.carrusel-track img.activa{
+  transform:scale(1.12);
+}
 </style>
 </head>
 
@@ -355,12 +377,12 @@ style="position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-in
     
     <!-- Carrusel 1: se mueve de IZQUIERDA a DERECHA -->
     <div style="margin-bottom: 30px; overflow:hidden; border-radius:20px; background:#ffe8dd; padding:15px 0;">
-      <div id="carrusel1" style="display:flex; gap:15px; width:max-content;"></div>
+      <div id="carrusel1" class="carrusel-track"></div>
     </div>
     
     <!-- Carrusel 2: se mueve de DERECHA a IZQUIERDA -->
     <div style="overflow:hidden; border-radius:20px; background:#ffe8dd; padding:15px 0;">
-      <div id="carrusel2" style="display:flex; gap:15px; width:max-content;"></div>
+      <div id="carrusel2" class="carrusel-track"></div>
     </div>
     
     <div style="text-align:center; margin-top:30px;">
@@ -639,8 +661,8 @@ function back(){
 </div>
 
 <script>
-// ================= IMÁGENES =================
-const misImagenes = [
+
+const misImagenes=[
 "imagen1.jpg","imagen2.jpg","imagen3.jpg",
 "foto1.jpeg","foto2.jpeg","foto3.jpeg","foto4.jpeg",
 "foto5.jpeg","foto6.jpeg","foto7.jpeg","foto8.jpeg",
@@ -650,82 +672,84 @@ const misImagenes = [
 "may9.jpeg","may10.jpeg","may11.jpeg","may12.jpeg","may13.jpeg"
 ];
 
-// dividir en dos grupos
-const mitad = Math.ceil(misImagenes.length / 2);
-const grupo1 = misImagenes.slice(0, mitad);
-const grupo2 = misImagenes.slice(mitad);
+const mitad=Math.ceil(misImagenes.length/2);
+const grupo1=misImagenes.slice(0,mitad);
+const grupo2=misImagenes.slice(mitad);
 
-let carruselesActivados = false;
+let iniciado=false;
 
+function crearCarrusel(track,imagenes,direccion){
 
-// ================= CREAR CARRUSEL =================
-function crearCarrusel(track, imagenes, direccion = -1){
+  const lista=[...imagenes,...imagenes];
+  track.innerHTML="";
 
-    // duplicamos SOLO una vez (clave del infinito)
-    const lista = [...imagenes, ...imagenes];
+  lista.forEach(src=>{
+    const img=document.createElement("img");
+    img.src=src;
+    track.appendChild(img);
+  });
 
-    track.innerHTML = "";
+  let pos=0;
+  const ancho=248*imagenes.length;
 
-    lista.forEach(src=>{
-        const img=document.createElement("img");
-        img.src=src;
-        img.style.width="200px";
-        img.style.height="200px";
-        img.style.objectFit="cover";
-        img.style.borderRadius="16px";
-        img.style.boxShadow="0 4px 12px rgba(0,0,0,.15)";
-        track.appendChild(img);
+  function animar(){
+
+    pos+=direccion*0.18;
+
+    if(Math.abs(pos)>=ancho){
+      pos=0;
+    }
+
+    track.style.transform=`translateX(${direccion<0?pos:-pos}px)`;
+
+    const imgs=track.querySelectorAll("img");
+    const centro=window.innerWidth/2;
+
+    imgs.forEach(img=>{
+      const rect=img.getBoundingClientRect();
+      const medio=rect.left+rect.width/2;
+
+      if(Math.abs(medio-centro)<120){
+        img.classList.add("activa");
+      }else{
+        img.classList.remove("activa");
+      }
     });
 
-    let pos=0;
-    const anchoImagen = 215; // 200px + gap(15)
-    const anchoTotal = imagenes.length * anchoImagen;
+    requestAnimationFrame(animar);
+  }
 
-    function animar(){
-        pos += direccion * 0.5;
-
-        // reinicio invisible (loop infinito)
-        if(direccion < 0 && Math.abs(pos) >= anchoTotal){
-            pos = 0;
-        }
-
-        if(direccion > 0 && pos >= anchoTotal){
-            pos = 0;
-        }
-
-        track.style.transform=`translateX(${direccion<0?pos:-pos}px)`;
-        requestAnimationFrame(animar);
-    }
-
-    animar();
+  animar();
 }
 
-
-// ================= INICIAR =================
 function iniciarCarruseles(){
 
-    if(carruselesActivados) return;
+  if(iniciado) return;
 
-    const track1=document.getElementById("carrusel1");
-    const track2=document.getElementById("carrusel2");
+  crearCarrusel(
+    document.getElementById("carrusel1"),
+    grupo1,
+    -1
+  );
 
-    crearCarrusel(track1, grupo1, -1); // izquierda
-    crearCarrusel(track2, grupo2, 1);  // derecha
+  crearCarrusel(
+    document.getElementById("carrusel2"),
+    grupo2,
+    1
+  );
 
-    carruselesActivados=true;
+  iniciado=true;
 }
 
-
-// detectar apertura sección recuerdo
-const openSecOriginal = window.openSec;
+const openSecOriginal=window.openSec;
 
 window.openSec=function(id){
-    openSecOriginal(id);
-
-    if(id==="recuerdo"){
-        setTimeout(iniciarCarruseles,200);
-    }
+  openSecOriginal(id);
+  if(id==="recuerdo"){
+    setTimeout(iniciarCarruseles,200);
+  }
 };
+
 </script>
 
 </body>
