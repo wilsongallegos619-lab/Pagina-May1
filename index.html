@@ -623,6 +623,182 @@ function back(){
   </p>
   <button class="back" onclick="openSec('meses')">Volver</button>
 </div>
+  <!-- MES 5 -->
+<div id="mes5" class="section">
+  <h2>🌼 Nuestro quinto mes</h2>
+  <p style="max-width:700px;margin:auto;font-size:18px;">
+  Este mes es especial porque estoy creando esta página para usted… llena de detalles, recuerdos y amor, para demostrarle que incluso en la distancia siempre pienso en usted 💛
+  </p>
+  <button class="back" onclick="openSec('meses')">Volver</button>
+</div>
+
+<!-- ========== AQUÍ VA EL CÓDIGO DEL CARRUSEL ========== -->
+<script>
+// ========== CARRUSEL INFINITO AUTOMÁTICO EN RECUERDO ==========
+(function() {
+  // Lista de todas tus imágenes (agrega o quita según las que tengas)
+  const imagenes = [
+    "imagen1.jpg",
+    "imagen2.jpg",
+    "imagen3.jpg",
+    "foto1.jpeg",
+    "foto2.jpeg",
+    "foto3.jpeg",
+    "foto4.jpeg",
+    "foto5.jpeg",
+    "foto6.jpeg",
+    "foto7.jpeg",
+    "foto8.jpeg",
+    "foto9.jpeg",
+    "foto10.jpeg",
+    "may1.jpeg",
+    "may2.jpeg",
+    "may3.jpeg",
+    "may4.jpeg",
+    "may5.jpeg",
+    "may6.jpeg",
+    "may7.jpeg",
+    "may8.jpeg",
+    "may9.jpeg",
+    "may10.jpeg",
+    "may11.jpeg",
+    "may12.jpeg",
+    "may13.jpeg"
+  ];
   
+  let track = null;
+  let currentIndex = 0;
+  let autoInterval = null;
+  let isAnimating = false;
+  let itemWidth = 220;
+  let totalOriginal = imagenes.length;
+  let duplicatedItems = [];
+  
+  function prepareDuplicated() {
+    duplicatedItems = [...imagenes, ...imagenes, ...imagenes];
+  }
+  
+  function renderTrack() {
+    if (!track) return;
+    track.innerHTML = '';
+    duplicatedItems.forEach((imgSrc, idx) => {
+      const imgContainer = document.createElement('div');
+      imgContainer.style.flex = "0 0 auto";
+      imgContainer.style.width = "200px";
+      imgContainer.style.borderRadius = "20px";
+      imgContainer.style.overflow = "hidden";
+      imgContainer.style.boxShadow = "0 8px 20px rgba(0,0,0,0.2)";
+      imgContainer.style.backgroundColor = "#fff";
+      imgContainer.style.padding = "8px";
+      
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.style.width = "100%";
+      img.style.height = "180px";
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "14px";
+      img.style.display = "block";
+      
+      imgContainer.appendChild(img);
+      track.appendChild(imgContainer);
+    });
+  }
+  
+  function updatePosition(animate = true) {
+    if (!track) return;
+    if (animate) {
+      track.style.transition = 'transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    } else {
+      track.style.transition = 'none';
+    }
+    const offset = -currentIndex * itemWidth;
+    track.style.transform = `translateX(${offset}px)`;
+  }
+  
+  function handleInfiniteLoop() {
+    const totalDuplicated = duplicatedItems.length;
+    if (currentIndex < totalOriginal) {
+      currentIndex = currentIndex + totalOriginal;
+      updatePosition(false);
+    } else if (currentIndex >= totalDuplicated - totalOriginal) {
+      currentIndex = currentIndex - totalOriginal;
+      updatePosition(false);
+    }
+  }
+  
+  function nextSlide() {
+    if (isAnimating) return;
+    isAnimating = true;
+    currentIndex++;
+    updatePosition(true);
+    
+    setTimeout(() => {
+      handleInfiniteLoop();
+      isAnimating = false;
+    }, 650);
+  }
+  
+  function startAutoPlay() {
+    if (autoInterval) clearInterval(autoInterval);
+    autoInterval = setInterval(() => {
+      nextSlide();
+    }, 2800);
+  }
+  
+  function stopAutoPlay() {
+    if (autoInterval) {
+      clearInterval(autoInterval);
+      autoInterval = null;
+    }
+  }
+  
+  function initCarousel() {
+    track = document.getElementById('carouselTrack');
+    if (!track) return;
+    
+    prepareDuplicated();
+    renderTrack();
+    
+    const firstItem = track.children[0];
+    if (firstItem) {
+      const width = firstItem.offsetWidth;
+      const gap = 20;
+      itemWidth = width + gap;
+    }
+    
+    currentIndex = totalOriginal;
+    updatePosition(false);
+    startAutoPlay();
+    
+    const carouselContainer = track.parentElement;
+    if (carouselContainer) {
+      carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+      carouselContainer.addEventListener('mouseleave', startAutoPlay);
+    }
+  }
+  
+  let carouselInitialized = false;
+  const originalOpenSec = window.openSec;
+  window.openSec = function(id) {
+    if (id === 'recuerdo' && !carouselInitialized) {
+      setTimeout(() => {
+        initCarousel();
+        carouselInitialized = true;
+      }, 100);
+    }
+    originalOpenSec(id);
+  };
+  
+  if (document.getElementById('recuerdo') && document.getElementById('recuerdo').style.display !== 'none') {
+    setTimeout(() => {
+      initCarousel();
+      carouselInitialized = true;
+    }, 100);
+  }
+})();
+</script>
+
+</body>
+</html>
 </body>
 </html>
