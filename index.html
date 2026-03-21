@@ -253,6 +253,23 @@ input{
 .carrusel-track img.activa{
   transform:scale(1.12);
 }
+  /* TRANSICIÓN SUAVE AL ENTRAR */
+.fade-out{
+  animation:fadeOut .6s forwards;
+}
+.fade-in{
+  animation:fadeInZoom .8s ease;
+}
+
+@keyframes fadeOut{
+  from{opacity:1; transform:scale(1);}
+  to{opacity:0; transform:scale(0.95);}
+}
+
+@keyframes fadeInZoom{
+  from{opacity:0; transform:scale(1.05);}
+  to{opacity:1; transform:scale(1);}
+}
 </style>
 </head>
 
@@ -467,11 +484,27 @@ style="position:fixed; top:0; left:0; width:100%; height:100%; border:none; z-in
 <script>
 function entrar(){
   const passInput=document.getElementById("pass").value;
+
   if(passInput==="22102025"){
-    login.style.display="none";
-    menu.style.display="block";
-    music.play();
-    startEffect("💗");
+
+    const loginDiv=document.getElementById("login");
+    const menuDiv=document.getElementById("menu");
+
+    // animación salida login
+    loginDiv.classList.add("fade-out");
+
+    setTimeout(()=>{
+      loginDiv.style.display="none";
+
+      // mostrar menú con animación
+      menuDiv.style.display="block";
+      menuDiv.classList.add("fade-in");
+
+      music.play();
+      startEffect("💗");
+
+    },600);
+
   }else{
     msg.textContent="Contraseña incorrecta 😢";
   }
@@ -481,7 +514,9 @@ function openSec(id){
   stopEffect();
   document.querySelectorAll(".section").forEach(s=>s.style.display="none");
   menu.style.display="none";
-  document.getElementById(id).style.display="block";
+  const sec=document.getElementById(id);
+sec.style.display="block";
+sec.classList.add("fade-in");
 
   if(id==="carta" || id==="flores") startEffect("🌸");
   if(id==="recuerdo") startEffect("❤️");
